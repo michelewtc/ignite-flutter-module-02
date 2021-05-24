@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:notes/create_note_page.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -31,14 +30,13 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: () {
-          setState(() async {
-            final description = await Navigator.push(context,
-                MaterialPageRoute(builder: (context) => CreateNotePage()));
+        onPressed: () async {
+          var description = await Navigator.pushNamed(context, "/create-note");
+          if (description != null) {
             setState(() {
-              notes.add(description);
+              notes.add(description as String);
             });
-          });
+          }
         },
       ),
     );
