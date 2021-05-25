@@ -7,36 +7,71 @@ class CreateNotePage extends StatefulWidget {
 
 class _CreateNotePageState extends State<CreateNotePage> {
   var description = "";
+  var textController = TextEditingController();
+  var isEdit = false;
+
+  @override
+  void initState() {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      if (ModalRoute.of(context)!.settings.arguments != null) {
+        description = ModalRoute.of(context)!.settings.arguments as String;
+        textController.text = description;
+        setState(() {
+          isEdit = true;
+        });
+      }
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Create Note"),
+        title: Text(isEdit ? "Edit Note" : "Create Note"),
         centerTitle: true,
         actions: [
-          IconButton(icon: Icon(Icons.delete), onPressed: () {}),
+          if (isEdit)
+            IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () {
+                Navigator.pop(context, "");
+              },
+            ),
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(32.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextField(
+              controller: textController,
               maxLines: null,
               onChanged: (value) {
                 setState(() {
                   description = value;
                 });
               },
+              decoration: InputDecoration(labelText: "Descrição"),
+            ),
+            SizedBox(
+              height: 32,
             ),
             if (description.isNotEmpty)
-              ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context, description);
-                  },
-                  child: Text("Salvar"))
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 300,
+                    child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.pop(context, description);
+                        },
+                        child: Text("Salvar")),
+                  ),
+                ],
+              )
           ],
         ),
       ),
