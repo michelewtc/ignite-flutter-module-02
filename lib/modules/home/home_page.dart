@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:notes/modules/home/widgets/card/card_widget.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -20,26 +20,7 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           children: [
             for (var i = 0; i < notes.length; i++)
-              Card(
-                child: ListTile(
-                  title: Text(notes[i]),
-                  onTap: () async {
-                    var response = await Navigator.pushNamed(
-                        context, "/create-note",
-                        arguments: notes[i]);
-                    if (response != null) {
-                      setState(() {
-                        var description = response as String;
-                        if (response.isEmpty) {
-                          notes.removeAt(i);
-                        } else {
-                          notes[i] = description;
-                        }
-                      });
-                    }
-                  },
-                ),
-              ),
+              CardWidget(notes: notes, index: i),
           ],
         ),
       ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:notes/home/home_page.dart';
-import 'package:notes/notes/create_note_page.dart';
+import 'package:notes/modules/home/home_page.dart';
+import 'package:notes/modules/notes/create_note_page.dart';
 
 class AppRoutes {
   static String homePage = "/home";
